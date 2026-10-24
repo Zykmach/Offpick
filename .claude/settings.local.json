@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter --version)",
+      "Bash(flutter pub *)",
+      "Bash(cd ~/.pub-cache/hosted/pub.dev/lucide_icons_flutter-4.0.1/lib && grep -ohE \"static const IconData \\(pants|trousers|shoe|footwear|sneaker|boot|handbag|briefcase|backpack|batteryCharging|cable|plug|powerBank|batteryFull|sparkle|ticket|badgePercent|tags|bellRing|bellOff|refreshCw|lock|lockKeyhole|info|send|smartphoneCharging|zap|shieldCheck|messageCircle|trash2|trash|creditCard|calendar|clock3|scanLine|flame|circleCheck|chevronUp|eye|eyeOff\\)\\\\b\" lucide_icons.dart | sort -u)",
+      "Read(//Users/reneevraj/.pub-cache/hosted/pub.dev/lucide_icons_flutter-4.0.1/lib/**)",
+      "Bash(flutter test *)",
+      "Bash(flutter devices *)",
+      "Bash(xcrun simctl *)"
+    ]
+  }
+}
