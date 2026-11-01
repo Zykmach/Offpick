@@ -1,69 +1,33 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show SupabaseClient;
 
-import 'package:http/http.dart' as http;
+import 'auth_interceptor.dart';
 
-import '../../services/mock/mock_server.dart';
-import '../constants/api_constants.dart';
-import '../errors/app_exception.dart';
-
-/// Every network call in the app goes through this class.
-/// While the backend is not ready, requests are answered by [MockServer].
+/// Dio for our Supabase Edge Functions (offers, go).
+/// Cuelinks is never called from the app: its key stays on the server.
 class ApiClient {
-  final MockServer mockServer;
-  String? authToken;
+  final Dio dio;
 
-  ApiClient({required this.mockServer, this.authToken});
-
-  Future<dynamic> get(String path, {Map<String, String>? query}) {
-    return send('GET', path, query: query);
+  /// [supabaseUrl] is the project address, e.g. https://abcd.supabase.co
+  ApiClient(SupabaseClient supabase, {required String supabaseUrl})
+      : dio = Dio(
+          BaseOptions(
+            baseUrl: '$supabaseUrl/functions/v1/',
+            connectTimeout: const Duration(seconds: 20),
+            receiveTimeout: const Duration(seconds: 30),
+            contentType: Headers.jsonContentType,
+          ),
+        ) {
+    dio.interceptors.add(AuthInterceptor(supabase: supabase, dio: dio));
   }
 
-  Future<dynamic> post(String path, {Map<String, dynamic>? body}) {
-    return send('POST', path, body: body);
+  Future<dynamic> get(String path) async {
+    final response = await dio.get(path);
+    return response.data;
   }
 
-  Future<dynamic> send(
-    String method,
-    String path, {
-    Map<String, String>? query,
-    Map<String, dynamic>? body,
-  }) async {
-    if (ApiConstants.useMockServer) {
-      await Future.delayed(ApiConstants.mockLatency);
-      return mockServer.handle(method, path, query: query ?? {}, body: body ?? {});
-    }
-    return sendReal(method, path, query: query, body: body);
-  }
-
-  Future<dynamic> sendReal(
-    String method,
-    String path, {
-    Map<String, String>? query,
-    Map<String, dynamic>? body,
-  }) async {
-    final uri = Uri.parse('${ApiConstants.baseUrl}$path').replace(queryParameters: query);
-    final headers = {
-      'Content-Type': 'application/json',
-      if (authToken != null) 'Authorization': 'Bearer $authToken',
-    };
-
-    try {
-      final response = method == 'GET'
-          ? await http.get(uri, headers: headers).timeout(ApiConstants.timeout)
-          : await http
-              .post(uri, headers: headers, body: jsonEncode(body ?? {}))
-              .timeout(ApiConstants.timeout);
-
-      final data = response.body.isEmpty ? null : jsonDecode(response.body);
-      if (response.statusCode >= 400) {
-        final message = data is Map ? data['message']?.toString() : null;
-        throw AppException(message ?? 'Request failed', statusCode: response.statusCode);
-      }
-      return data;
-    } on AppException {
-      rethrow;
-    } catch (error) {
-      throw const AppException('Could not reach the server. Check your internet.');
-    }
+  Future<dynamic> post(String path, Map<String, dynamic> body) async {
+    final response = await dio.post(path, data: body);
+    return response.data;
   }
 }

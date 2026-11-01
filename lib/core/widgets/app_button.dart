@@ -55,15 +55,13 @@ class AppButton extends StatelessWidget {
       foreground = colors.textPrimary;
     }
 
-    final content = Row(
+    // Very narrow buttons (three in a row on a small phone) keep only the label and badge.
+    Widget content(bool isNarrow) => Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (leading != null) ...[leading!, const SizedBox(width: 12)],
-        if (icon != null) ...[
-          Icon(icon, size: 20, color: foreground),
-          const SizedBox(width: 10),
-        ],
+        if (icon != null && !isNarrow) ...[Icon(icon, size: 20, color: foreground), const SizedBox(width: 10)],
         Flexible(
           child: Text(
             label,
@@ -73,7 +71,7 @@ class AppButton extends StatelessWidget {
           ),
         ),
         if (badge != null) ...[const SizedBox(width: 8), badge!],
-        if (trailingIcon != null) ...[
+        if (trailingIcon != null && !isNarrow) ...[
           const SizedBox(width: 10),
           Icon(trailingIcon, size: 20, color: foreground),
         ],
@@ -106,7 +104,10 @@ class AppButton extends StatelessWidget {
                       height: 22,
                       child: CircularProgressIndicator(strokeWidth: 2.4, color: foreground),
                     )
-                  : KeyedSubtree(key: const ValueKey('content'), child: content),
+                  : LayoutBuilder(
+                      key: const ValueKey('content'),
+                      builder: (context, constraints) => content(constraints.maxWidth < 150),
+                    ),
             ),
           ),
         ),

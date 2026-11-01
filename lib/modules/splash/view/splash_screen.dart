@@ -39,7 +39,7 @@ class SplashScreen extends StatelessWidget {
                 child: Text(
                   AppConstants.tagline,
                   style: AppTextStyles.body.copyWith(
-                    fontSize: 17,
+                    fontSize: 15,
                     letterSpacing: 6,
                     color: colors.textSecondary,
                   ),

@@ -34,8 +34,8 @@ class ProfileHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.heading2.copyWith(fontSize: 26)),
-              Text(details, style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary)),
+              Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.heading2.copyWith(fontSize: 22)),
+              Text(details, style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary)),
             ],
           ),
         ),
@@ -80,7 +80,7 @@ class UpgradeBanner extends StatelessWidget {
                 children: [
                   Text(
                     isPro ? "You're on Offpick Pro" : 'Get Offpick Pro',
-                    style: AppTextStyles.title.copyWith(fontSize: 19, color: foreground),
+                    style: AppTextStyles.title.copyWith(fontSize: 16, color: foreground),
                   ),
                   Text(
                     isPro ? 'Compare and alerts are unlocked' : 'Unlock price comparison and alerts',
@@ -93,7 +93,7 @@ class UpgradeBanner extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(color: AppColors.lime, borderRadius: BorderRadius.circular(14)),
-                child: Text('Upgrade', style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: AppColors.onLime)),
+                child: Text('Upgrade', style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: AppColors.onLime)),
               ),
           ],
         ),
@@ -163,14 +163,14 @@ class SettingsTile extends StatelessWidget {
           children: [
             Icon(icon, size: 22, color: color),
             const SizedBox(width: 16),
-            Expanded(child: Text(title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 17, color: color))),
+            Expanded(child: Text(title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 15, color: color))),
             if (value != null)
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 child: Text(
                   value!,
                   key: ValueKey(value),
-                  style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary),
+                  style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary),
                 ),
               ),
             if (showChevron && !isDanger) ...[

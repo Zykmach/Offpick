@@ -42,7 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                       onTap: () => goToAuth(context, controller),
                       child: Text(
                         'Skip',
-                        style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17, color: colors.textSecondary),
+                        style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15, color: colors.textSecondary),
                       ),
                     ),
                   ),
@@ -61,14 +61,21 @@ class WelcomeScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Center(
-                                child: WelcomePreview(pageIndex: index, demoEndsAt: demoEndsAt),
+                                // The preview is an illustration: it scales as one picture
+                                // and ignores the phone's text size.
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: MediaQuery.withNoTextScaling(
+                                    child: WelcomePreview(pageIndex: index, demoEndsAt: demoEndsAt),
+                                  ),
+                                ),
                               ),
                             ),
                             FadeSlideIn(
                               index: 2,
                               child: Text(
                                 '${page.titleLineOne}\n${page.titleLineTwo}',
-                                style: AppTextStyles.display.copyWith(fontSize: 38),
+                                style: AppTextStyles.display.copyWith(fontSize: 28),
                               ),
                             ),
                             const SizedBox(height: 14),
@@ -76,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                               index: 3,
                               child: Text(
                                 page.message,
-                                style: AppTextStyles.body.copyWith(fontSize: 17, color: colors.textSecondary),
+                                style: AppTextStyles.body.copyWith(fontSize: 15, color: colors.textSecondary),
                               ),
                             ),
                           ],
@@ -93,12 +100,6 @@ class WelcomeScreen extends StatelessWidget {
                       PageDots(count: controller.pages.length, current: controller.currentPage),
                       const SizedBox(height: 22),
                       AppButton(label: 'Get started', onPressed: () => goToAuth(context, controller)),
-                      const SizedBox(height: 8),
-                      AppButton(
-                        label: 'I already have an account',
-                        type: AppButtonType.text,
-                        onPressed: () => goToAuth(context, controller),
-                      ),
                     ],
                   ),
                 ),

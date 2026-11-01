@@ -37,6 +37,7 @@ class SubcategoryTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: colors.border, width: 1.2),
         ),
+        padding: const EdgeInsets.symmetric(horizontal: 6),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -54,10 +55,17 @@ class SubcategoryTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(name, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16)),
+            Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14),
+            ),
             const SizedBox(height: 4),
             Text(
               '$offerCount offers',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.bodyMedium.copyWith(color: isViewAll ? colors.textSecondary : colors.accent),
             ),
           ],
@@ -93,11 +101,11 @@ class AlertBanner extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Never miss a drop', style: AppTextStyles.titleSmall.copyWith(fontSize: 17)),
+                Text('Never miss a drop', style: AppTextStyles.titleSmall.copyWith(fontSize: 15)),
                 const SizedBox(height: 2),
                 Text(
                   'Alert me on new $name offers',
-                  style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                  style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                 ),
               ],
             ),

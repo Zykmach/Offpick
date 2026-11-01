@@ -10,6 +10,7 @@ import '../../../core/widgets/app_logo.dart';
 import '../../../core/widgets/badges.dart';
 import '../../../core/widgets/circle_icon_button.dart';
 import '../../../core/widgets/fade_slide_in.dart';
+import '../../../core/widgets/feature_row.dart';
 import '../../../core/widgets/pressable.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../controller/pro_controller.dart';
@@ -44,7 +45,7 @@ class PaywallScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final linkStyle = AppTextStyles.bodyMedium.copyWith(fontSize: 16, color: colors.textSecondary);
+    final linkStyle = AppTextStyles.bodyMedium.copyWith(fontSize: 14, color: colors.textSecondary);
 
     return Scaffold(
       body: SafeArea(
@@ -89,13 +90,13 @@ class PaywallScreen extends StatelessWidget {
                         index: 2,
                         child: Text(
                           'Browsing offers and visiting stores is always free. Pro adds the tools that save you more.',
-                          style: AppTextStyles.body.copyWith(fontSize: 17, color: colors.textSecondary),
+                          style: AppTextStyles.body.copyWith(fontSize: 15, color: colors.textSecondary),
                         ),
                       ),
                       const SizedBox(height: 26),
                       const FadeSlideIn(
                         index: 3,
-                        child: ProFeatureRow(
+                        child: FeatureRow(
                           icon: LucideIcons.arrowLeftRight,
                           title: 'Compare across stores',
                           message: 'Same product, every store, best price first',
@@ -103,7 +104,7 @@ class PaywallScreen extends StatelessWidget {
                       ),
                       const FadeSlideIn(
                         index: 4,
-                        child: ProFeatureRow(
+                        child: FeatureRow(
                           icon: LucideIcons.bell,
                           title: 'Smart alerts',
                           message: 'New offers, price drops and discount thresholds',
@@ -111,7 +112,7 @@ class PaywallScreen extends StatelessWidget {
                       ),
                       const FadeSlideIn(
                         index: 5,
-                        child: ProFeatureRow(
+                        child: FeatureRow(
                           icon: LucideIcons.clock,
                           title: 'Ending-soon reminders',
                           message: 'A nudge before a deal you like expires',
@@ -148,16 +149,16 @@ class PaywallScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 14),
                       Consumer<ProfileController>(
-                        builder: (context, profile, child) => Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        builder: (context, profile, child) => Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 24,
+                          runSpacing: 8,
                           children: [
                             Pressable(
                               onTap: controller.isRestoring ? null : () => restore(context, controller),
                               child: Text(controller.isRestoring ? 'Restoring...' : 'Restore purchase', style: linkStyle),
                             ),
-                            const SizedBox(width: 24),
                             Pressable(onTap: profile.openTerms, child: Text('Terms', style: linkStyle)),
-                            const SizedBox(width: 24),
                             Pressable(onTap: profile.openPrivacy, child: Text('Privacy', style: linkStyle)),
                           ],
                         ),

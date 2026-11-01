@@ -47,7 +47,8 @@ class OfferFilterModel {
       case OfferSort.endingSoon:
         result.sort((first, second) => first.endsAt.compareTo(second.endsAt));
       case OfferSort.lowestPrice:
-        result.sort((first, second) => first.price.compareTo(second.price));
+        // Deals without a product price go to the end.
+        result.sort((first, second) => (first.price ?? 1 << 30).compareTo(second.price ?? 1 << 30));
     }
     return result;
   }

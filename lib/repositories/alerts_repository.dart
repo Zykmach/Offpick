@@ -1,38 +1,32 @@
 import '../core/constants/app_constants.dart';
-import '../core/network/api_endpoints.dart';
+import '../core/constants/db_tables.dart';
 import '../core/storage/local_storage.dart';
 import '../modules/alerts/model/alert_model.dart';
 import '../modules/alerts/model/notification_model.dart';
-import '../services/api_service.dart';
+import '../services/supabase_service.dart';
 
 class AlertsRepository {
   final LocalStorage storage;
-  final ApiService apiService;
+  final SupabaseService supabase;
 
-  AlertsRepository({required this.storage, required this.apiService});
+  AlertsRepository({required this.storage, required this.supabase});
 
+  /// Alerts were copied from Supabase at login, see AccountSyncService.
   Future<List<AlertModel>> fetchAlerts() async {
-    final saved = storage.getJsonList(AppConstants.keyAlerts);
-    if (saved != null) return saved.map(AlertModel.fromJson).toList();
-
-    final json = await apiService.getList(ApiEndpoints.alerts);
-    final alerts = json.map(AlertModel.fromJson).toList();
-    await saveAlerts(alerts);
-    return alerts;
+    final saved = storage.getJsonList(AppConstants.keyAlerts) ?? [];
+    return saved.map(AlertModel.fromJson).toList();
   }
 
-  Future<void> saveAlerts(List<AlertModel> alerts) {
-    return storage.setJsonList(AppConstants.keyAlerts, alerts.map((alert) => alert.toJson()).toList());
+  Future<void> saveAlerts(List<AlertModel> alerts) async {
+    final json = alerts.map((alert) => alert.toJson()).toList();
+    await storage.setJsonList(AppConstants.keyAlerts, json);
+    await supabase.push((client) => client.rpc(DbTables.setAlerts, params: {'items': json}));
   }
 
+  /// Notifications stay on this phone until push alerts are built.
   Future<List<NotificationModel>> fetchNotifications() async {
-    final saved = storage.getJsonList(AppConstants.keyNotifications);
-    if (saved != null) return saved.map(NotificationModel.fromJson).toList();
-
-    final json = await apiService.getList(ApiEndpoints.notifications);
-    final notifications = json.map(NotificationModel.fromJson).toList();
-    await saveNotifications(notifications);
-    return notifications;
+    final saved = storage.getJsonList(AppConstants.keyNotifications) ?? [];
+    return saved.map(NotificationModel.fromJson).toList();
   }
 
   Future<void> saveNotifications(List<NotificationModel> notifications) {

@@ -40,7 +40,7 @@ class SavingsBanner extends StatelessWidget {
                   curve: Curves.easeOutCubic,
                   builder: (context, value, child) => Text(
                     '${Formatters.price(value.round())} saved',
-                    style: AppTextStyles.priceLarge.copyWith(fontSize: 26),
+                    style: AppTextStyles.priceLarge.copyWith(fontSize: 22),
                   ),
                 ),
                 const SizedBox(height: 2),

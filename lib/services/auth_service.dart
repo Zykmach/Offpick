@@ -1,40 +1,53 @@
-import '../core/constants/app_constants.dart';
-import '../core/storage/local_storage.dart';
-import '../core/storage/secure_storage.dart';
-import '../modules/auth/model/user_model.dart';
-import 'api_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Keeps the logged in session: token in secure storage, profile in prefs.
+import '../core/constants/env_config.dart';
+import '../core/errors/app_exception.dart';
+
+/// Google sign-in on the phone, then the Google ID token is exchanged for
+/// a Supabase session. Supabase keeps and refreshes the session itself.
 class AuthService {
-  final LocalStorage localStorage;
-  final SecureStorage secureStorage;
-  final ApiService apiService;
+  final SupabaseClient client;
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+  bool isGoogleReady = false;
 
-  AuthService({required this.localStorage, required this.secureStorage, required this.apiService});
+  AuthService(this.client);
 
-  UserModel? get savedUser {
-    final json = localStorage.getJson(AppConstants.keyUser);
-    return json == null ? null : UserModel.fromJson(json);
+  bool get hasSession => client.auth.currentSession != null;
+
+  Future<void> prepareGoogle() async {
+    if (isGoogleReady) return;
+    if (EnvConfig.googleWebClientId.isEmpty) {
+      throw const AppException('Google sign-in is not set up yet. Add GOOGLE_WEB_CLIENT_ID to env.json.');
+    }
+    final isIos = defaultTargetPlatform == TargetPlatform.iOS;
+    await googleSignIn.initialize(
+      serverClientId: EnvConfig.googleWebClientId,
+      clientId: isIos && EnvConfig.googleIosClientId.isNotEmpty ? EnvConfig.googleIosClientId : null,
+    );
+    isGoogleReady = true;
   }
 
-  Future<bool> restoreSession() async {
-    final token = await secureStorage.readToken();
-    if (token == null || savedUser == null) return false;
-    apiService.setToken(token);
-    return true;
+  Future<void> signInWithGoogle() async {
+    await prepareGoogle();
+    final GoogleSignInAccount account;
+    try {
+      account = await googleSignIn.authenticate(scopeHint: const ['email', 'profile']);
+    } on GoogleSignInException catch (error) {
+      if (error.code == GoogleSignInExceptionCode.canceled) {
+        throw const AppException('Sign-in was cancelled');
+      }
+      throw AppException(error.description ?? 'Google sign-in failed. Please try again.');
+    }
+
+    final idToken = account.authentication.idToken;
+    if (idToken == null) throw const AppException('Google did not return a sign-in token.');
+    await client.auth.signInWithIdToken(provider: OAuthProvider.google, idToken: idToken);
   }
 
-  Future<void> saveSession(String token, UserModel user) async {
-    await secureStorage.saveToken(token);
-    await localStorage.setJson(AppConstants.keyUser, user.toJson());
-    apiService.setToken(token);
-  }
-
-  Future<void> saveUser(UserModel user) => localStorage.setJson(AppConstants.keyUser, user.toJson());
-
-  Future<void> clearSession() async {
-    await secureStorage.clearToken();
-    await localStorage.remove(AppConstants.keyUser);
-    apiService.setToken(null);
+  Future<void> signOut() async {
+    await client.auth.signOut();
+    if (isGoogleReady) await googleSignIn.signOut();
   }
 }

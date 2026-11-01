@@ -51,7 +51,7 @@ class CompareScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
                 child: Text(
                   "Products you're tracking across stores. Prices refresh automatically.",
-                  style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary),
+                  style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary),
                 ),
               ),
               Expanded(

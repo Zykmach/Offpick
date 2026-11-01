@@ -22,6 +22,7 @@ class RedirectController extends ChangeNotifier {
   double progress = 0;
   bool isCancelled = false;
   Timer? timer;
+  Future<String>? linkFuture;
 
   RedirectController({
     required this.homeRepository,
@@ -30,12 +31,14 @@ class RedirectController extends ChangeNotifier {
     required this.args,
   });
 
-  int get price => args.price ?? offer?.price ?? 0;
+  int? get price => args.price ?? offer?.price;
 
   int get discountPercent {
     final current = offer;
+    final value = price;
     if (current == null) return 0;
-    return ((current.mrp - price) * 100 / current.mrp).floor();
+    if (value == null || current.mrp == null) return current.discountPercent;
+    return ((current.mrp! - value) * 100 / current.mrp!).floor();
   }
 
   String get storeName => store?.name ?? offer?.storeName ?? 'the store';
@@ -48,6 +51,7 @@ class RedirectController extends ChangeNotifier {
     offer = await homeRepository.offerById(args.offerId);
     final storeId = args.storeId.isNotEmpty ? args.storeId : offer?.storeId ?? '';
     store = await catalogRepository.storeById(storeId);
+    linkFuture = makeLink();
     notifyListeners();
 
     final done = Completer<void>();
@@ -69,11 +73,29 @@ class RedirectController extends ChangeNotifier {
 
   Future<bool> openStore() async {
     timer?.cancel();
-    final current = offer;
-    if (store == null || current == null) return false;
+    if (offer == null) return false;
     progress = 1;
     notifyListeners();
-    return linkService.openExternal(store!.linkFor('${current.brand} ${current.title}'));
+    final link = await (linkFuture ??= makeLink());
+    return linkService.openExternal(link);
+  }
+
+  /// The offer's own page, or a search on the store picked in Compare,
+  /// turned into our Cuelinks link so the purchase earns a commission.
+  /// If that fails the user still gets to the store, just without tracking.
+  Future<String> makeLink() async {
+    final current = offer!;
+    final isOfferStore = args.storeId.isEmpty || args.storeId == current.storeId;
+    final otherStore = store;
+    final plainUrl = !isOfferStore && otherStore != null && otherStore.hasSearch
+        ? otherStore.linkFor('${current.brand} ${current.title}')
+        : current.url;
+    try {
+      return await homeRepository.storeLink(url: plainUrl, offerId: current.id);
+    } catch (error) {
+      debugPrint('Affiliate link failed: $error');
+      return plainUrl;
+    }
   }
 
   void cancel() {

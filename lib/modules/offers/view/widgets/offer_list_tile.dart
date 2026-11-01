@@ -8,6 +8,7 @@ import '../../../../core/widgets/layout_widgets.dart';
 import '../../../../core/widgets/product_image.dart';
 import '../../model/offer_model.dart';
 import '../offer_actions.dart';
+import 'offer_price_row.dart';
 
 /// Horizontal offer card used in category lists and saved offers.
 class OfferListTile extends StatelessWidget {
@@ -39,7 +40,7 @@ class OfferListTile extends StatelessWidget {
                       heroTag: 'offer-image-${offer.id}',
                     ),
                   ),
-                  Positioned(left: 8, top: 8, child: DiscountBadge(percent: offer.discountPercent, compact: true, fontSize: 12)),
+                  Positioned(left: 8, top: 8, child: DiscountBadge(percent: offer.discountPercent, compact: true, fontSize: 11)),
                 ],
               ),
             ),
@@ -57,12 +58,12 @@ class OfferListTile extends StatelessWidget {
                             '${offer.brand} · ${offer.storeName}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                            style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                           ),
                         ),
                         if (trailing != null) trailing!,
                         if (trailing == null && offer.isNew)
-                          Text('NEW', style: AppTextStyles.tag.copyWith(fontSize: 12, color: colors.accent)),
+                          Text('NEW', style: AppTextStyles.tag.copyWith(fontSize: 11, color: colors.accent)),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -70,12 +71,12 @@ class OfferListTile extends StatelessWidget {
                       offer.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.title.copyWith(fontSize: 17),
+                      style: AppTextStyles.title.copyWith(fontSize: 15),
                     ),
                     const SizedBox(height: 4),
-                    PriceRow(price: offer.price, mrp: offer.mrp, priceStyle: AppTextStyles.price, mrpSize: 13),
+                    OfferPriceRow(offer: offer, priceStyle: AppTextStyles.price, mrpSize: 12),
                     const SizedBox(height: 14),
-                    CountdownBadge(endsAt: offer.endsAt, style: CountdownStyle.pillWithPrefix, fontSize: 13),
+                    CountdownBadge(endsAt: offer.endsAt, style: CountdownStyle.pillWithPrefix, fontSize: 12),
                   ],
                 ),
               ),

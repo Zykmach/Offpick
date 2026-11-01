@@ -1,4 +1,4 @@
-package com.example.offpick
+package com.app.offpick
 
 import io.flutter.embedding.android.FlutterActivity
 

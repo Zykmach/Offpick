@@ -26,8 +26,8 @@ class CompareController extends ChangeNotifier {
     notifyListeners();
     try {
       trackedIds = await userDataRepository.fetchTrackedIds();
-      final results = await Future.wait(trackedIds.map(homeRepository.fetchComparison));
-      comparisons = results;
+      final results = await Future.wait(trackedIds.map(homeRepository.comparisonOrNull));
+      comparisons = results.whereType<ComparisonModel>().toList();
     } catch (error) {
       errorMessage = AppException.from(error).message;
     }

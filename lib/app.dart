@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/responsive.dart';
 import 'modules/profile/controller/theme_controller.dart';
 import 'routes/app_routes.dart';
 import 'routes/route_generator.dart';
@@ -27,6 +28,7 @@ class OffpickApp extends StatelessWidget {
           scaffoldMessengerKey: notificationService.messengerKey,
           initialRoute: AppRoutes.splash,
           onGenerateRoute: RouteGenerator.generate,
+          builder: Responsive.wrap,
         );
       },
     );

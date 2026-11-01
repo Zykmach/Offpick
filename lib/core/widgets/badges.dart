@@ -65,6 +65,7 @@ class DiscountBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (percent <= 0) return const SizedBox.shrink();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: fontSize * 0.7, vertical: fontSize * 0.35),
       decoration: BoxDecoration(color: AppColors.lime, borderRadius: BorderRadius.circular(8)),
@@ -130,7 +131,7 @@ class LiveTag extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-          Text('LIVE', style: AppTextStyles.tag.copyWith(fontSize: 12, color: colors.accent, letterSpacing: 0.6)),
+          Text('LIVE', style: AppTextStyles.tag.copyWith(fontSize: 11, color: colors.accent, letterSpacing: 0.6)),
         ],
       ),
     );

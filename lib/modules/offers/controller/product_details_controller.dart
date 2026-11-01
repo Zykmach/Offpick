@@ -52,7 +52,7 @@ class ProductDetailsController extends ChangeNotifier {
       category = await catalogRepository.categoryById(offer!.categoryId);
       isLoading = false;
       notifyListeners();
-      comparison = await homeRepository.fetchComparison(offerId);
+      if (offer!.hasPrice) comparison = await homeRepository.comparisonOrNull(offerId);
     } catch (error) {
       errorMessage = AppException.from(error).message;
     }
@@ -64,9 +64,13 @@ class ProductDetailsController extends ChangeNotifier {
     final current = offer;
     if (current == null) return;
     await linkService.share(
-      '${current.brand} ${current.title} is ${Formatters.price(current.price)} '
-      '(${current.discountPercent}% off) on ${current.storeName}. Found on Offpick.',
+      '${current.title} on ${current.storeName}: ${dealText(current)}. Found on Offpick.',
     );
+  }
+
+  String dealText(OfferModel current) {
+    if (current.hasPrice) return '${Formatters.price(current.price!)} (${current.discountPercent}% off)';
+    return current.dealLabel;
   }
 
   void setImagePage(int index) {

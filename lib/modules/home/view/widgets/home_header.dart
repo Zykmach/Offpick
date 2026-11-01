@@ -58,7 +58,7 @@ class HomeHeader extends StatelessWidget {
                       'Search shirts, phones, brands...',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textMuted),
+                      style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textMuted),
                     ),
                   ),
                   Pressable(

@@ -7,6 +7,7 @@ import '../../../core/theme/app_text_styles.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_logo.dart';
 import '../../../core/widgets/fade_slide_in.dart';
+import '../../../core/widgets/layout_widgets.dart';
 import '../../../routes/app_routes.dart';
 import '../../../routes/route_arguments.dart';
 import '../../main_shell/controller/main_shell_controller.dart';
@@ -32,7 +33,7 @@ class AlertCreatedScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: FillOrScroll(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
           child: Column(
             children: [
@@ -54,14 +55,14 @@ class AlertCreatedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              FadeSlideIn(index: 2, child: Text('Your alert is on', style: AppTextStyles.heading1.copyWith(fontSize: 34))),
+              FadeSlideIn(index: 2, child: Text('Your alert is on', style: AppTextStyles.heading1.copyWith(fontSize: 24))),
               const SizedBox(height: 10),
               FadeSlideIn(
                 index: 3,
                 child: Text(
                   "We'll notify you the moment\n${alert.title} matches.",
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.body.copyWith(fontSize: 17, color: colors.textSecondary),
+                  style: AppTextStyles.body.copyWith(fontSize: 15, color: colors.textSecondary),
                 ),
               ),
               const SizedBox(height: 22),
@@ -99,7 +100,7 @@ class AlertCreatedScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "YOU'LL GET A NOTIFICATION LIKE THIS",
-                    style: AppTextStyles.label.copyWith(fontSize: 13, color: colors.textSecondary),
+                    style: AppTextStyles.label.copyWith(fontSize: 12, color: colors.textSecondary),
                   ),
                 ),
               ),
@@ -157,11 +158,11 @@ class NotificationPreview extends StatelessWidget {
                   children: [
                     Text('Offpick', style: AppTextStyles.body.copyWith(color: colors.textSecondary)),
                     const Spacer(),
-                    Text('now', style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary)),
+                    Text('now', style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary)),
                   ],
                 ),
                 const SizedBox(height: 2),
-                Text(title, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16)),
+                Text(title, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14)),
                 const SizedBox(height: 2),
                 Text(body, style: AppTextStyles.body.copyWith(color: colors.textSecondary)),
               ],

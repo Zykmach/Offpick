@@ -84,7 +84,7 @@ class TrendingList extends StatelessWidget {
                         style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w800, color: colors.accent),
                       ),
                     ),
-                    Expanded(child: Text(items[index].title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 17))),
+                    Expanded(child: Text(items[index].title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 15))),
                     Text(
                       'up to ${items[index].maxDiscount}% off',
                       style: AppTextStyles.body.copyWith(color: colors.textSecondary),
@@ -130,7 +130,7 @@ class CategoryShortcuts extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     categories[index].name.split(' ').first,
-                    style: AppTextStyles.captionMedium.copyWith(fontSize: 14),
+                    style: AppTextStyles.captionMedium.copyWith(fontSize: 13),
                   ),
                 ],
               ),
@@ -180,13 +180,14 @@ class SearchSuggestions extends StatelessWidget {
                         children: [
                           Text(offers[index].title, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.bodyMedium),
                           Text(
-                            '${offers[index].brand} · ${offers[index].storeName} · ${offers[index].discountPercent}% off',
+                            '${offers[index].storeName} · ${offers[index].dealLabel}',
                             style: AppTextStyles.caption.copyWith(color: colors.textSecondary),
                           ),
                         ],
                       ),
                     ),
-                    Text(Formatters.price(offers[index].price), style: AppTextStyles.priceSmall.copyWith(fontSize: 16)),
+                    if (offers[index].hasPrice)
+                      Text(Formatters.price(offers[index].price!), style: AppTextStyles.priceSmall.copyWith(fontSize: 14)),
                   ],
                 ),
               ),

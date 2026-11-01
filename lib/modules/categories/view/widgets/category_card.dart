@@ -56,7 +56,7 @@ class CategoryCard extends StatelessWidget {
                     Text(category.name, style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w500, fontSize: 21)),
                     Text(
                       '${category.liveOffers} live offers',
-                      style: AppTextStyles.bodyMedium.copyWith(fontSize: 16, color: colors.accent),
+                      style: AppTextStyles.bodyMedium.copyWith(fontSize: 14, color: colors.accent),
                     ),
                   ],
                 ),
@@ -123,7 +123,7 @@ class QuickLink extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.bodyMedium.copyWith(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: centered ? FontWeight.w600 : FontWeight.w500,
                 color: muted ? colors.textSecondary : colors.textPrimary,
               ),

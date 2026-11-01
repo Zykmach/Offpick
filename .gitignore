@@ -43,3 +43,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local keys for --dart-define-from-file (copy env.example.json)
+env.json
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+
+# Edge Function secrets for local runs
+supabase/functions/.env

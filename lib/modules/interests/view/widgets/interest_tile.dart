@@ -57,7 +57,7 @@ class InterestTile extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16)),
+            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14)),
           ],
         ),
       ),

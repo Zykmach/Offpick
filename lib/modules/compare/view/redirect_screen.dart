@@ -59,7 +59,7 @@ class RedirectScreen extends StatelessWidget {
               final offer = controller.offer;
               final monogram = controller.store?.monogram ?? '';
 
-              return Padding(
+              return FillOrScroll(
                 padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
                 child: Column(
                   children: [
@@ -114,7 +114,7 @@ class RedirectScreen extends StatelessWidget {
                       child: Text(
                         "Complete your purchase on the store.\nWe'll keep watching prices for you.",
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.body.copyWith(fontSize: 17, color: colors.textSecondary),
+                        style: AppTextStyles.body.copyWith(fontSize: 15, color: colors.textSecondary),
                       ),
                     ),
                     const SizedBox(height: 28),
@@ -128,11 +128,13 @@ class RedirectScreen extends StatelessWidget {
                             tint: offer.tint,
                             title: offer.title,
                             subtitle: '${controller.isBestPrice ? 'Best price found' : 'Live offer'} · '
-                                '${controller.discountPercent}% off',
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: Text(Formatters.price(controller.price), style: AppTextStyles.price),
-                            ),
+                                '${controller.discountPercent > 0 ? '${controller.discountPercent}% off' : offer.dealLabel}',
+                            trailing: controller.price == null
+                                ? null
+                                : Padding(
+                                    padding: const EdgeInsets.only(right: 6),
+                                    child: Text(Formatters.price(controller.price!), style: AppTextStyles.price),
+                                  ),
                           ),
                         ),
                       ),
@@ -142,7 +144,7 @@ class RedirectScreen extends StatelessWidget {
                     Text(
                       'Final price and stock are confirmed by ${controller.storeName} at checkout.',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                      style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                     ),
                     const SizedBox(height: 16),
                     AppButton(

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/circle_icon_button.dart';
@@ -62,7 +63,7 @@ class InterestsScreen extends StatelessWidget {
                           onTap: () => skip(context, controller),
                           child: Text(
                             'Skip',
-                            style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17, color: colors.textSecondary),
+                            style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15, color: colors.textSecondary),
                           ),
                         ),
                     ],
@@ -80,7 +81,7 @@ class InterestsScreen extends StatelessWidget {
                               index: 1,
                               child: Text(
                                 "We'll put these offers first in your feed. Change anytime.",
-                                style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary),
+                                style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary),
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -88,11 +89,11 @@ class InterestsScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: controller.interests.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 12,
                                 crossAxisSpacing: 12,
-                                childAspectRatio: 1.85,
+                                childAspectRatio: Responsive.tileRatio(context, 1.85),
                               ),
                               itemBuilder: (context, index) {
                                 final interest = controller.interests[index];
@@ -110,7 +111,7 @@ class InterestsScreen extends StatelessWidget {
                             const SizedBox(height: 28),
                             Text(
                               'Stores you shop on',
-                              style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: colors.textSecondary),
+                              style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: colors.textSecondary),
                             ),
                             const SizedBox(height: 14),
                             Wrap(

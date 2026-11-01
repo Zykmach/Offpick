@@ -75,7 +75,7 @@ class AlertsScreen extends StatelessWidget {
                                 child: Text(
                                   'Mark all read',
                                   style: AppTextStyles.bodySemiBold.copyWith(
-                                    fontSize: 17,
+                                    fontSize: 15,
                                     color: controller.unreadCount > 0 ? colors.accent : colors.textMuted,
                                   ),
                                 ),
@@ -159,7 +159,7 @@ class NotificationsList extends StatelessWidget {
         for (final entry in groups.entries) ...[
           Padding(
             padding: const EdgeInsets.only(top: 18, bottom: 12),
-            child: Text(entry.key, style: AppTextStyles.label.copyWith(fontSize: 14, color: colors.textSecondary)),
+            child: Text(entry.key, style: AppTextStyles.label.copyWith(fontSize: 13, color: colors.textSecondary)),
           ),
           for (final item in entry.value)
             Padding(

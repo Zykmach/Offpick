@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/circle_icon_button.dart';
 import '../../../core/widgets/fade_slide_in.dart';
@@ -75,11 +76,11 @@ class CategoryDetailScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: subcategories.length + 1,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             mainAxisSpacing: 12,
                             crossAxisSpacing: 12,
-                            childAspectRatio: 0.86,
+                            childAspectRatio: Responsive.tileRatio(context, 0.86),
                           ),
                           itemBuilder: (context, index) {
                             if (index == subcategories.length) {

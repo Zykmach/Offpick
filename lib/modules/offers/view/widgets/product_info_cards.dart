@@ -43,37 +43,54 @@ class CountdownCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     hasEnded ? 'Offer ended' : 'Offer ends in',
-                    style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: colors.warning),
+                    style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: colors.warning),
                   ),
-                  const Spacer(),
-                  for (var index = 0; index < parts.length; index++) ...[
-                    if (index > 0)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Text(':', style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w800)),
-                      ),
-                    Container(
-                      width: 46,
-                      height: 46,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(color: colors.warningSoft, borderRadius: BorderRadius.circular(12)),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 250),
-                        transitionBuilder: (child, animation) => FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween(begin: const Offset(0, -0.3), end: Offset.zero).animate(animation),
-                            child: child,
-                          ),
-                        ),
-                        child: Text(
-                          parts[index],
-                          key: ValueKey(parts[index]),
-                          style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w700, color: colors.warning),
-                        ),
+                  const SizedBox(width: 8),
+                  // The timer boxes shrink to fit on small phones.
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          for (var index = 0; index < parts.length; index++) ...[
+                            if (index > 0)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                child: Text(':', style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w800)),
+                              ),
+                            Container(
+                              width: 46,
+                              height: 46,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: colors.warningSoft,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 250),
+                                transitionBuilder: (child, animation) => FadeTransition(
+                                  opacity: animation,
+                                  child: SlideTransition(
+                                    position: Tween(begin: const Offset(0, -0.3), end: Offset.zero).animate(animation),
+                                    child: child,
+                                  ),
+                                ),
+                                child: Text(
+                                  parts[index],
+                                  key: ValueKey(parts[index]),
+                                  style: AppTextStyles.heading3.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: colors.warning,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ],
               ),
               Padding(
@@ -82,8 +99,12 @@ class CountdownCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Expanded(child: TimeColumn(label: 'Started', value: Formatters.dayAndTime(offer.startedAt, clock.now))),
-                  Expanded(child: TimeColumn(label: 'Ends', value: Formatters.dayAndTime(offer.endsAt, clock.now))),
+                  Expanded(
+                    child: TimeColumn(label: 'Started', value: Formatters.dayAndTime(offer.startedAt, clock.now)),
+                  ),
+                  Expanded(
+                    child: TimeColumn(label: 'Ends', value: Formatters.dayAndTime(offer.endsAt, clock.now)),
+                  ),
                 ],
               ),
             ],
@@ -107,7 +128,7 @@ class TimeColumn extends StatelessWidget {
       children: [
         Text(label, style: AppTextStyles.body.copyWith(color: context.colors.textSecondary)),
         const SizedBox(height: 2),
-        Text(value, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17)),
+        Text(value, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15)),
       ],
     );
   }
@@ -151,7 +172,7 @@ class AlsoOnStoresCard extends StatelessWidget {
                           backgroundColor: colors.surface,
                           child: Text(
                             shown[index].monogram,
-                            style: AppTextStyles.tag.copyWith(fontSize: 14, color: colors.textPrimary),
+                            style: AppTextStyles.tag.copyWith(fontSize: 13, color: colors.textPrimary),
                           ),
                         ),
                       ),
@@ -164,15 +185,18 @@ class AlsoOnStoresCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Also on ${stores.length} more stores', style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17)),
+                  Text(
+                    'Also on ${stores.length} more stores',
+                    style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15),
+                  ),
                   Text(
                     'Compare to see the lowest price',
-                    style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                    style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                   ),
                 ],
               ),
             ),
-            const ProTag(fontSize: 12),
+            const ProTag(fontSize: 11),
             const SizedBox(width: 8),
             Icon(LucideIcons.chevronRight, color: colors.textPrimary),
           ],

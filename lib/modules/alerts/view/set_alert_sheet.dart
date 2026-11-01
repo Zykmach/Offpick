@@ -45,7 +45,7 @@ class SetAlertSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final labelStyle = AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: colors.textSecondary);
+    final labelStyle = AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: colors.textSecondary);
 
     return Consumer<SetAlertController>(
       builder: (context, controller, child) {
@@ -76,7 +76,7 @@ class SetAlertSheet extends StatelessWidget {
                   text: 'What do you want? ',
                   style: labelStyle,
                   children: [
-                    TextSpan(text: 'Pick any', style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary)),
+                    TextSpan(text: 'Pick any', style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary)),
                   ],
                 ),
               ),

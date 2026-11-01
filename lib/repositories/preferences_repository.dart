@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../core/constants/app_constants.dart';
+import '../core/constants/db_tables.dart';
 import '../core/storage/local_storage.dart';
+import '../services/supabase_service.dart';
 
-/// Settings and choices that only live on this device.
+/// Settings and choices. Interests and stores are also saved to the
+/// profile in Supabase, the rest only lives on this device.
 class PreferencesRepository {
   final LocalStorage storage;
+  final SupabaseService supabase;
 
-  PreferencesRepository(this.storage);
+  PreferencesRepository({required this.storage, required this.supabase});
+
+  Future<void> updateProfile(Map<String, dynamic> values) {
+    return supabase.push((client) => client.from(DbTables.profiles).update(values).eq('id', supabase.userId!));
+  }
 
   bool get isOnboarded => storage.getBool(AppConstants.keyOnboarded);
 
@@ -15,15 +23,24 @@ class PreferencesRepository {
 
   bool get hasPickedInterests => storage.getBool(AppConstants.keyInterestsDone);
 
-  Future<void> setPickedInterests(bool value) => storage.setBool(AppConstants.keyInterestsDone, value);
+  Future<void> setPickedInterests(bool value) async {
+    await storage.setBool(AppConstants.keyInterestsDone, value);
+    await updateProfile({'interests_done': value});
+  }
 
   List<String> get interestIds => storage.getStringList(AppConstants.keyInterests);
 
-  Future<void> saveInterestIds(List<String> ids) => storage.setStringList(AppConstants.keyInterests, ids);
+  Future<void> saveInterestIds(List<String> ids) async {
+    await storage.setStringList(AppConstants.keyInterests, ids);
+    await updateProfile({'interest_ids': ids});
+  }
 
   List<String> get storeIds => storage.getStringList(AppConstants.keyStores);
 
-  Future<void> saveStoreIds(List<String> ids) => storage.setStringList(AppConstants.keyStores, ids);
+  Future<void> saveStoreIds(List<String> ids) async {
+    await storage.setStringList(AppConstants.keyStores, ids);
+    await updateProfile({'store_ids': ids});
+  }
 
   ThemeMode get themeMode {
     final name = storage.getString(AppConstants.keyThemeMode);

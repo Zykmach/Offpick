@@ -6,9 +6,8 @@ class AppConstants {
   static const String termsUrl = 'https://offpick.app/terms';
   static const String privacyUrl = 'https://offpick.app/privacy';
 
-  // Yearly price is not decided yet, replace it when it is.
-  static const String yearlyPrice = '[PRICE]';
-  static const String monthlyPrice = '9.99';
+  static const String yearlyPrice = '99';
+  static const String monthlyPrice = '9';
 
   static const int maxRecentSearches = 6;
 
@@ -31,5 +30,4 @@ class AppConstants {
   static const String keyNotifications = 'notifications';
   static const String keyIsPro = 'is_pro';
   static const String keyProPlan = 'pro_plan';
-  static const String keyAuthToken = 'auth_token';
 }

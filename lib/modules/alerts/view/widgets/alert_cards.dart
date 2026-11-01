@@ -87,12 +87,12 @@ class NotificationCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: Text(notification.title, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17))),
+                    Expanded(child: Text(notification.title, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15))),
                     const SizedBox(width: 8),
                     Consumer<ClockService>(
                       builder: (context, clock, child) => Text(
                         Formatters.shortAgo(notification.createdAt, clock.now),
-                        style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                        style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                       ),
                     ),
                   ],
@@ -153,7 +153,7 @@ class AlertCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(alert.title, style: AppTextStyles.title.copyWith(fontSize: 19)),
+                        Text(alert.title, style: AppTextStyles.title.copyWith(fontSize: 16)),
                         Text(alert.subtitle, style: AppTextStyles.body.copyWith(color: colors.textSecondary)),
                       ],
                     ),

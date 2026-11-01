@@ -54,9 +54,9 @@ class TriggerOptionTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(trigger.label, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17)),
+                  Text(trigger.label, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15)),
                   if (description != null)
-                    Text(description, style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary)),
+                    Text(description, style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary)),
                 ],
               ),
             ),

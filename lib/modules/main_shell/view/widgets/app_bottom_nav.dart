@@ -91,7 +91,7 @@ class AppBottomNav extends StatelessWidget {
                       AnimatedDefaultTextStyle(
                         duration: const Duration(milliseconds: 250),
                         style: AppTextStyles.captionMedium.copyWith(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
                           color: isActive ? colors.textPrimary : colors.textSecondary,
                         ),

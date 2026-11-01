@@ -75,7 +75,7 @@ class PillChip extends StatelessWidget {
             ],
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 220),
-              style: AppTextStyles.bodyMedium.copyWith(fontSize: 16, color: foreground),
+              style: AppTextStyles.bodyMedium.copyWith(fontSize: 14, color: foreground),
               child: Text(label),
             ),
           ],

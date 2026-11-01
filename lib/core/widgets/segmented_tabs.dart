@@ -67,7 +67,7 @@ class SegmentedTabs extends StatelessWidget {
                         AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
                           style: AppTextStyles.bodySemiBold.copyWith(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: isSelected ? colors.textPrimary : colors.textSecondary,
                           ),
                           child: Text(labels[index]),
@@ -100,7 +100,7 @@ class CountBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 6),
       alignment: Alignment.center,
       decoration: BoxDecoration(color: AppColors.lime, borderRadius: BorderRadius.circular(11)),
-      child: Text('$count', style: AppTextStyles.tag.copyWith(fontSize: 12, color: AppColors.onLime)),
+      child: Text('$count', style: AppTextStyles.tag.copyWith(fontSize: 11, color: AppColors.onLime)),
     );
   }
 }

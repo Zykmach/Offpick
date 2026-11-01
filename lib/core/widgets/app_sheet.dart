@@ -94,7 +94,7 @@ class SheetOption extends StatelessWidget {
         child: Row(
           children: [
             if (icon != null) ...[Icon(icon, size: 22), const SizedBox(width: 14)],
-            Expanded(child: Text(label, style: AppTextStyles.bodyMedium.copyWith(fontSize: 16))),
+            Expanded(child: Text(label, style: AppTextStyles.bodyMedium.copyWith(fontSize: 14))),
             AnimatedOpacity(
               opacity: selected ? 1 : 0,
               duration: const Duration(milliseconds: 200),

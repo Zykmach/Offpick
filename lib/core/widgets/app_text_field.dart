@@ -64,7 +64,7 @@ class AppTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       onSubmitted: onSubmitted,
-      style: style ?? AppTextStyles.body.copyWith(fontSize: 16, color: colors.textPrimary),
+      style: style ?? AppTextStyles.body.copyWith(fontSize: 14, color: colors.textPrimary),
       decoration: InputDecoration(
         hintText: hint,
         errorText: errorText,

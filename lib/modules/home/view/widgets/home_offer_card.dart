@@ -14,6 +14,7 @@ import '../../../../services/clock_service.dart';
 import '../../../offers/model/offer_model.dart';
 import '../../../offers/view/offer_actions.dart';
 import '../../../offers/view/widgets/save_offer_button.dart';
+import '../../../offers/view/widgets/offer_price_row.dart';
 
 /// Large offer card on the Home feed.
 class HomeOfferCard extends StatelessWidget {
@@ -53,7 +54,7 @@ class HomeOfferCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                       decoration: BoxDecoration(color: colors.surface, borderRadius: BorderRadius.circular(14)),
-                      child: Text(offer.storeName, style: AppTextStyles.captionMedium.copyWith(fontSize: 14)),
+                      child: Text(offer.storeName, style: AppTextStyles.captionMedium.copyWith(fontSize: 13)),
                     ),
                   ),
                   Positioned(right: 14, bottom: 12, child: SaveOfferButton(offer: offer, size: 42)),
@@ -70,7 +71,7 @@ class HomeOfferCard extends StatelessWidget {
                     style: AppTextStyles.label.copyWith(color: colors.textSecondary),
                   ),
                   const SizedBox(height: 4),
-                  Text(offer.title, style: AppTextStyles.title.copyWith(fontSize: 20)),
+                  Text(offer.title, style: AppTextStyles.title.copyWith(fontSize: 17)),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -78,15 +79,14 @@ class HomeOfferCard extends StatelessWidget {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
-                          child: PriceRow(
-                            price: offer.price,
-                            mrp: offer.mrp,
-                            priceStyle: AppTextStyles.priceLarge.copyWith(fontSize: 28),
+                          child: OfferPriceRow(
+                            offer: offer,
+                            priceStyle: AppTextStyles.priceLarge.copyWith(fontSize: 22),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      CountdownBadge(endsAt: offer.endsAt, fontSize: 14),
+                      CountdownBadge(endsAt: offer.endsAt, fontSize: 13),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -94,24 +94,26 @@ class HomeOfferCard extends StatelessWidget {
                     builder: (context, clock, child) => Text(
                       'Started ${Formatters.ago(offer.startedAt, clock.now)} · '
                       'Ends ${Formatters.dayAndTime(offer.endsAt, clock.now).replaceFirst('Today', 'today')}',
-                      style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+                      style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Expanded(
-                        child: AppButton(
-                          label: 'Compare',
-                          icon: LucideIcons.arrowLeftRight,
-                          type: AppButtonType.outline,
-                          badge: const ProTag(),
-                          height: 46,
-                          radius: 16,
-                          onPressed: () => OfferActions.compare(context, offer.id),
+                      if (offer.hasPrice) ...[
+                        Expanded(
+                          child: AppButton(
+                            label: 'Compare',
+                            icon: LucideIcons.arrowLeftRight,
+                            type: AppButtonType.outline,
+                            badge: const ProTag(),
+                            height: 46,
+                            radius: 16,
+                            onPressed: () => OfferActions.compare(context, offer.id),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
+                        const SizedBox(width: 10),
+                      ],
                       Expanded(
                         child: AppButton(
                           label: 'View deal',

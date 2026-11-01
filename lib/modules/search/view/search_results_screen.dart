@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/circle_icon_button.dart';
@@ -68,7 +69,7 @@ class SearchResultsScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 14),
                     child: ChipScroller(
                       children: [
-                        Text('In:', style: AppTextStyles.bodyMedium.copyWith(fontSize: 16, color: colors.textSecondary)),
+                        Text('In:', style: AppTextStyles.bodyMedium.copyWith(fontSize: 14, color: colors.textSecondary)),
                         for (final subcategory in controller.foundIn)
                           PillChip(
                             label: controller.pathFor(subcategory),
@@ -114,7 +115,7 @@ class SearchResultsScreen extends StatelessWidget {
                     child: Text(
                       controller.isLoading ? 'Searching...' : '${results.length} live offers for “${controller.query}”',
                       key: ValueKey('${results.length}-${controller.query}-${controller.isLoading}'),
-                      style: AppTextStyles.body.copyWith(fontSize: 16, color: colors.textSecondary),
+                      style: AppTextStyles.body.copyWith(fontSize: 14, color: colors.textSecondary),
                     ),
                   ),
                 ),
@@ -131,11 +132,11 @@ class SearchResultsScreen extends StatelessWidget {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
                               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                               itemCount: results.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 22,
                                 crossAxisSpacing: 14,
-                                childAspectRatio: 0.54,
+                                childAspectRatio: Responsive.tileRatio(context, 0.54),
                               ),
                               itemBuilder: (context, index) => FadeSlideIn(
                                 key: ValueKey('${controller.filter.sort}-${results[index].id}'),

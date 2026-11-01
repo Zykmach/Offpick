@@ -16,6 +16,8 @@ class StoreModel {
   /// Link to the product search on the store's website.
   String linkFor(String query) => searchUrl.replaceAll('{q}', Uri.encodeComponent(query));
 
+  bool get hasSearch => searchUrl.contains('{q}');
+
   factory StoreModel.fromJson(Map<String, dynamic> json) {
     return StoreModel(
       id: json['id'] as String,

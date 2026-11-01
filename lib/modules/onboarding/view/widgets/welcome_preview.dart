@@ -94,11 +94,11 @@ class PreviewStoreRow extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(color: AppColors.lime, borderRadius: BorderRadius.circular(8)),
-              child: Text('BEST', style: AppTextStyles.tag.copyWith(fontSize: 11, color: AppColors.onLime)),
+              child: Text('BEST', style: AppTextStyles.tag.copyWith(fontSize: 10, color: AppColors.onLime)),
             ),
             const SizedBox(width: 8),
           ],
-          Text(Formatters.price(price), style: AppTextStyles.priceSmall.copyWith(fontSize: 16)),
+          Text(Formatters.price(price), style: AppTextStyles.priceSmall.copyWith(fontSize: 14)),
         ],
       ),
     );
@@ -225,7 +225,7 @@ class BestPricePreview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('BEST AVAILABLE PRICE', style: AppTextStyles.label.copyWith(fontSize: 11, color: colors.accent)),
+            Text('BEST AVAILABLE PRICE', style: AppTextStyles.label.copyWith(fontSize: 10, color: colors.accent)),
             const SizedBox(height: 12),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,

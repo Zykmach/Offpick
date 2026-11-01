@@ -13,7 +13,8 @@ class AppLogoMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(size: Size.square(size), painter: LogoPainter());
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return CustomPaint(size: Size.square(size), painter: LogoPainter(isDark: isDark));
   }
 }
 
@@ -38,7 +39,7 @@ class AppWordmark extends StatelessWidget {
           offset: Offset(-fontSize * 0.2, 0),
           child: Text(
             'ffpick',
-            style: GoogleFonts.outfit(
+            style: GoogleFonts.poppins(
               fontSize: fontSize,
               fontWeight: FontWeight.w800,
               letterSpacing: -fontSize * 0.04,
@@ -53,7 +54,21 @@ class AppWordmark extends StatelessWidget {
 }
 
 /// Draws the mark on a 100 x 100 grid and scales it to the given size.
+/// The bright lime version is for dark backgrounds; on light backgrounds
+/// the mark uses deeper greens so it stays visible.
 class LogoPainter extends CustomPainter {
+  final bool isDark;
+
+  LogoPainter({required this.isDark});
+
+  List<Color> get ringColors => isDark
+      ? const [AppColors.logoYellow, Color(0xFF9BE53B), AppColors.logoGreen]
+      : const [Color(0xFF9ACD10), Color(0xFF4CB52E), Color(0xFF15803D)];
+
+  Color get tagColor => isDark ? const Color(0xFFDDF23A) : const Color(0xFF3D9A1E);
+
+  Color get sparkColor => isDark ? const Color(0xFFD4EE33) : const Color(0xFF7DB51A);
+
   @override
   void paint(Canvas canvas, Size size) {
     final scale = size.width / 100;
@@ -68,10 +83,10 @@ class LogoPainter extends CustomPainter {
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = ringWidth
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [AppColors.logoYellow, Color(0xFF9BE53B), AppColors.logoGreen],
+        colors: ringColors,
       ).createShader(ringRect);
     canvas.drawCircle(center, ringRadius, ringPaint);
 
@@ -82,10 +97,10 @@ class LogoPainter extends CustomPainter {
 
   void drawTag(Canvas canvas, Offset center) {
     final tagPaint = Paint()
-      ..color = const Color(0xFFDDF23A)
+      ..color = tagColor
       ..style = PaintingStyle.fill;
     final cornerPaint = Paint()
-      ..color = const Color(0xFFDDF23A)
+      ..color = tagColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3
       ..strokeJoin = StrokeJoin.round;
@@ -110,7 +125,7 @@ class LogoPainter extends CustomPainter {
 
   void drawSparks(Canvas canvas) {
     final sparkPaint = Paint()
-      ..color = const Color(0xFFD4EE33)
+      ..color = sparkColor
       ..strokeWidth = 4.2
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(const Offset(63, 17), const Offset(66, 5), sparkPaint);
@@ -119,5 +134,5 @@ class LogoPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant LogoPainter oldDelegate) => oldDelegate.isDark != isDark;
 }

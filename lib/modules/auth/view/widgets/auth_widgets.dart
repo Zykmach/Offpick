@@ -15,7 +15,7 @@ class GoogleBadge extends StatelessWidget {
       height: 30,
       alignment: Alignment.center,
       decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      child: Text('G', style: AppTextStyles.tag.copyWith(fontSize: 15, color: AppColors.onLime)),
+      child: Text('G', style: AppTextStyles.tag.copyWith(fontSize: 14, color: AppColors.onLime)),
     );
   }
 }

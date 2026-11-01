@@ -59,7 +59,7 @@ class SearchScreen extends StatelessWidget {
                         onTap: () => Navigator.of(context).pop(),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          child: Text('Cancel', style: AppTextStyles.bodySemiBold.copyWith(fontSize: 17)),
+                          child: Text('Cancel', style: AppTextStyles.bodySemiBold.copyWith(fontSize: 15)),
                         ),
                       ),
                     ],

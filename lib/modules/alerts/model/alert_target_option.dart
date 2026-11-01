@@ -37,8 +37,10 @@ class AlertTargetOption {
       tabLabel: 'This product',
       iconKey: offer.iconKey,
       tint: offer.tint,
-      previewBody: '${Formatters.price(offer.mrp)} → ${Formatters.price(offer.price)} · '
-          '${offer.discountPercent}% OFF on ${offer.storeName}. Offer ending soon.',
+      previewBody: offer.hasPrice
+          ? '${Formatters.price(offer.mrp!)} → ${Formatters.price(offer.price!)} · '
+              '${offer.discountPercent}% OFF on ${offer.storeName}. Offer ending soon.'
+          : '${offer.dealLabel} on ${offer.storeName}. Offer ending soon.',
     );
   }
 

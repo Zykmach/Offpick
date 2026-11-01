@@ -4,11 +4,11 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/badges.dart';
 import '../../../../core/widgets/countdown_badge.dart';
-import '../../../../core/widgets/layout_widgets.dart';
 import '../../../../core/widgets/pressable.dart';
 import '../../../../core/widgets/product_image.dart';
 import '../../model/offer_model.dart';
 import '../offer_actions.dart';
+import 'offer_price_row.dart';
 
 /// Two-column card used on the search results grid.
 class OfferGridCard extends StatelessWidget {
@@ -26,8 +26,8 @@ class OfferGridCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 1.05,
+          // The image fills the space the text does not need.
+          Expanded(
             child: Stack(
               children: [
                 Positioned.fill(
@@ -39,7 +39,7 @@ class OfferGridCard extends StatelessWidget {
                     heroTag: 'offer-image-${offer.id}',
                   ),
                 ),
-                Positioned(left: 10, top: 10, child: DiscountBadge(percent: offer.discountPercent, fontSize: 12)),
+                Positioned(left: 10, top: 10, child: DiscountBadge(percent: offer.discountPercent, fontSize: 11)),
               ],
             ),
           ),
@@ -48,23 +48,23 @@ class OfferGridCard extends StatelessWidget {
             '${offer.brand} · ${offer.storeName}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.caption.copyWith(fontSize: 14, color: colors.textSecondary),
+            style: AppTextStyles.caption.copyWith(fontSize: 13, color: colors.textSecondary),
           ),
           const SizedBox(height: 2),
           Text(
             offer.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.title.copyWith(fontSize: 17, height: 1.2),
+            style: AppTextStyles.title.copyWith(fontSize: 15, height: 1.2),
           ),
           const SizedBox(height: 4),
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: PriceRow(price: offer.price, mrp: offer.mrp, priceStyle: AppTextStyles.price, mrpSize: 13),
+            child: OfferPriceRow(offer: offer, priceStyle: AppTextStyles.price, mrpSize: 12),
           ),
           const SizedBox(height: 4),
-          CountdownBadge(endsAt: offer.endsAt, style: CountdownStyle.inline, fontSize: 14),
+          CountdownBadge(endsAt: offer.endsAt, style: CountdownStyle.inline, fontSize: 13),
         ],
       ),
     );

@@ -45,7 +45,7 @@ class BestPriceCard extends StatelessWidget {
                   children: [
                     StoreAvatar(monogram: best.monogram, size: 26, circle: true, highlighted: true),
                     const SizedBox(width: 8),
-                    Text(best.storeName, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16)),
+                    Text(best.storeName, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14)),
                   ],
                 ),
               ),
@@ -57,13 +57,13 @@ class BestPriceCard extends StatelessWidget {
             spacing: 12,
             runSpacing: 6,
             children: [
-              Text(Formatters.price(best.price), style: AppTextStyles.priceHuge.copyWith(fontSize: 50)),
+              Text(Formatters.price(best.price), style: AppTextStyles.priceHuge.copyWith(fontSize: 36)),
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                   Formatters.price(best.mrp),
                   style: AppTextStyles.body.copyWith(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: colors.textMuted,
                     decoration: TextDecoration.lineThrough,
                     decorationColor: colors.textMuted,
@@ -72,7 +72,7 @@ class BestPriceCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
-                child: DiscountBadge(percent: best.discountPercent, fontSize: 14),
+                child: DiscountBadge(percent: best.discountPercent, fontSize: 13),
               ),
             ],
           ),
@@ -84,7 +84,7 @@ class BestPriceCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   '${Formatters.price(difference)} less than ${other.storeName}',
-                  style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: colors.accent),
+                  style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: colors.accent),
                 ),
               ],
             ),
@@ -138,7 +138,7 @@ class StorePriceRow extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Flexible(child: Text(price.storeName, style: AppTextStyles.title.copyWith(fontSize: 19))),
+                      Flexible(child: Text(price.storeName, style: AppTextStyles.title.copyWith(fontSize: 16))),
                       if (isBest) ...[const SizedBox(width: 8), StoreTag(label: 'BEST', color: colors.accent, background: colors.limeSoft)],
                       if (isViewing && !isBest) ...[
                         const SizedBox(width: 8),
@@ -146,7 +146,7 @@ class StorePriceRow extends StatelessWidget {
                       ],
                     ],
                   ),
-                  CountdownBadge(endsAt: price.endsAt, style: CountdownStyle.text, fontSize: 15),
+                  CountdownBadge(endsAt: price.endsAt, style: CountdownStyle.text, fontSize: 14),
                 ],
               ),
             ),
@@ -179,7 +179,7 @@ class StoreTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(8)),
-      child: Text(label, style: AppTextStyles.tag.copyWith(fontSize: 11, color: color, letterSpacing: 0.4)),
+      child: Text(label, style: AppTextStyles.tag.copyWith(fontSize: 10, color: color, letterSpacing: 0.4)),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/app_messages.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_loader.dart';
@@ -18,6 +20,8 @@ import '../controller/product_details_controller.dart';
 import 'offer_actions.dart';
 import 'widgets/product_gallery.dart';
 import 'widgets/product_info_cards.dart';
+import 'widgets/deal_info_card.dart';
+import 'widgets/offer_price_row.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({super.key});
@@ -29,6 +33,11 @@ class ProductDetailsScreen extends StatelessWidget {
       AlertTargetOption.forOffer(offer),
       if (subcategory != null) AlertTargetOption.forSubcategory(subcategory, controller.category?.name ?? ''),
     ]);
+  }
+
+  Future<void> copyCode(BuildContext context, String code) async {
+    await Clipboard.setData(ClipboardData(text: code));
+    if (context.mounted) AppMessages.show(context, 'Code $code copied');
   }
 
   @override
@@ -84,7 +93,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text(offer.brand.toUpperCase(), style: AppTextStyles.label.copyWith(fontSize: 14, color: colors.textSecondary)),
+                                  Text(offer.brand.toUpperCase(), style: AppTextStyles.label.copyWith(fontSize: 13, color: colors.textSecondary)),
                                   const Spacer(),
                                   Container(
                                     padding: const EdgeInsets.fromLTRB(6, 6, 14, 6),
@@ -96,7 +105,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                       children: [
                                         StoreAvatar(monogram: offer.storeName[0], size: 26, circle: true),
                                         const SizedBox(width: 8),
-                                        Text(offer.storeName, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16)),
+                                        Text(offer.storeName, style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14)),
                                       ],
                                     ),
                                   ),
@@ -112,22 +121,30 @@ class ProductDetailsScreen extends StatelessWidget {
                                   spacing: 12,
                                   runSpacing: 8,
                                   children: [
-                                    PriceRow(
-                                      price: offer.price,
-                                      mrp: offer.mrp,
-                                      priceStyle: AppTextStyles.priceLarge.copyWith(fontSize: 38),
-                                      mrpSize: 20,
+                                    OfferPriceRow(
+                                      offer: offer,
+                                      priceStyle: AppTextStyles.priceLarge.copyWith(fontSize: 28),
+                                      mrpSize: 17,
                                     ),
-                                    DiscountBadge(percent: offer.discountPercent, fontSize: 15),
+                                    DiscountBadge(percent: offer.discountPercent, fontSize: 14),
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'You save ${Formatters.price(offer.savings)}',
-                                style: AppTextStyles.bodySemiBold.copyWith(fontSize: 16, color: colors.accent),
-                              ),
+                              if (offer.savings > 0) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  'You save ${Formatters.price(offer.savings)}',
+                                  style: AppTextStyles.bodySemiBold.copyWith(fontSize: 14, color: colors.accent),
+                                ),
+                              ],
                               const SizedBox(height: 20),
+                              if (offer.hasCoupon || offer.description.isNotEmpty) ...[
+                                FadeSlideIn(
+                                  index: 2,
+                                  child: DealInfoCard(offer: offer, onCopyCode: () => copyCode(context, offer.couponCode)),
+                                ),
+                                const SizedBox(height: 14),
+                              ],
                               FadeSlideIn(index: 2, child: CountdownCard(offer: offer)),
                               const SizedBox(height: 14),
                               AnimatedSwitcher(
@@ -162,16 +179,18 @@ class ProductDetailsScreen extends StatelessWidget {
                       badge: const ProTag(lime: true, fontSize: 10),
                     ),
                     const SizedBox(width: 6),
-                    Expanded(
-                      child: AppButton(
-                        label: 'Compare',
-                        icon: LucideIcons.arrowLeftRight,
-                        type: AppButtonType.outline,
-                        badge: const ProTag(),
-                        onPressed: () => OfferActions.compare(context, offer.id),
+                    if (offer.hasPrice) ...[
+                      Expanded(
+                        child: AppButton(
+                          label: 'Compare',
+                          icon: LucideIcons.arrowLeftRight,
+                          type: AppButtonType.outline,
+                          badge: const ProTag(),
+                          onPressed: () => OfferActions.compare(context, offer.id),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
+                      const SizedBox(width: 10),
+                    ],
                     Expanded(
                       child: AppButton(
                         label: 'View deal',

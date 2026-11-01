@@ -11,7 +11,7 @@ class AppTheme {
 
   static ThemeData buildTheme(OffpickColors colors, Brightness brightness) {
     final isDark = brightness == Brightness.dark;
-    final baseText = GoogleFonts.interTextTheme(
+    final baseText = GoogleFonts.poppinsTextTheme(
       isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme,
     ).apply(bodyColor: colors.textPrimary, displayColor: colors.textPrimary);
 
@@ -54,7 +54,7 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colors.surface,
-        hintStyle: GoogleFonts.inter(color: colors.textMuted, fontSize: 16),
+        hintStyle: GoogleFonts.poppins(color: colors.textMuted, fontSize: 14),
         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         border: inputBorder,
         enabledBorder: inputBorder,
@@ -83,7 +83,7 @@ class AppTheme {
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: colors.inverse,
-        contentTextStyle: GoogleFonts.inter(color: colors.onInverse, fontSize: 14),
+        contentTextStyle: GoogleFonts.poppins(color: colors.onInverse, fontSize: 13),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(color: colors.accent),

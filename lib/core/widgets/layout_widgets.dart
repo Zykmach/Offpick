@@ -66,7 +66,9 @@ class SectionHeader extends StatelessWidget {
     final colors = context.colors;
     return Row(
       children: [
-        Text(title, style: AppTextStyles.heading3),
+        Flexible(
+          child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.heading3),
+        ),
         if (titleTrailing != null) ...[const SizedBox(width: 10), titleTrailing!],
         const Spacer(),
         if (actionLabel != null)
@@ -74,7 +76,7 @@ class SectionHeader extends StatelessWidget {
             onTap: onAction,
             child: Text(
               actionLabel!,
-              style: AppTextStyles.bodySemiBold.copyWith(color: actionColor ?? colors.accent, fontSize: 16),
+              style: AppTextStyles.bodySemiBold.copyWith(color: actionColor ?? colors.accent, fontSize: 14),
             ),
           ),
       ],
@@ -98,10 +100,7 @@ class ScreenHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
         children: [
-          CircleIconButton(
-            icon: LucideIcons.chevronLeft,
-            onTap: onBack ?? () => Navigator.of(context).maybePop(),
-          ),
+          CircleIconButton(icon: LucideIcons.chevronLeft, onTap: onBack ?? () => Navigator.of(context).maybePop()),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -109,8 +108,7 @@ class ScreenHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.heading2),
-                if (subtitle != null)
-                  Text(subtitle!, style: AppTextStyles.bodyMedium.copyWith(color: colors.accent)),
+                if (subtitle != null) Text(subtitle!, style: AppTextStyles.bodyMedium.copyWith(color: colors.accent)),
               ],
             ),
           ),
@@ -128,34 +126,33 @@ class PriceRow extends StatelessWidget {
   final TextStyle priceStyle;
   final double mrpSize;
 
-  const PriceRow({
-    super.key,
-    required this.price,
-    required this.mrp,
-    required this.priceStyle,
-    this.mrpSize = 15,
-  });
+  const PriceRow({super.key, required this.price, required this.mrp, required this.priceStyle, this.mrpSize = 15});
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
-      children: [
-        Text(Formatters.price(price), style: priceStyle),
-        const SizedBox(width: 8),
-        Text(
-          Formatters.price(mrp),
-          style: AppTextStyles.body.copyWith(
-            fontSize: mrpSize,
-            color: colors.textMuted,
-            decoration: TextDecoration.lineThrough,
-            decorationColor: colors.textMuted,
+    // Shrinks big prices (₹1,24,999) instead of running off the card.
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Text(Formatters.price(price), style: priceStyle),
+          const SizedBox(width: 8),
+          Text(
+            Formatters.price(mrp),
+            style: AppTextStyles.body.copyWith(
+              fontSize: mrpSize,
+              color: colors.textMuted,
+              decoration: TextDecoration.lineThrough,
+              decorationColor: colors.textMuted,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -173,7 +170,7 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -194,6 +191,28 @@ class EmptyState extends StatelessWidget {
             ),
             if (action != null) ...[const SizedBox(height: 24), action!],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A full-screen column that fills the height (so Spacers work) and scrolls
+/// instead of overflowing on short phones or with large text.
+class FillOrScroll extends StatelessWidget {
+  final EdgeInsets padding;
+  final Widget child;
+
+  const FillOrScroll({super.key, this.padding = EdgeInsets.zero, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        padding: padding,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: (constraints.maxHeight - padding.vertical).clamp(0, double.infinity)),
+          child: IntrinsicHeight(child: child),
         ),
       ),
     );
